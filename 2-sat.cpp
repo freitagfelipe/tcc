@@ -97,23 +97,23 @@ public:
         return true;
     }
 
-    void add_xor(int a, int b) {
-        this->add_or(a, b);
-        this->add_or(a ^ 1, b ^ 1);
+    void add_xor(int p, int q) {
+        this->add_or(p, q);
+        this->add_or(p ^ 1, q ^ 1);
     }
 
-    void add_equal(int a, int b) {
-        this->add_or(a, b ^ 1);
-        this->add_or(a ^ 1, b);
+    void add_equal(int p, int q) {
+        this->add_or(p, q ^ 1);
+        this->add_or(p ^ 1, q);
     }
 
-    void add_or(int a, int b) {
-        this->add_edge(a ^ 1, b);
-        this->add_edge(b ^ 1, a);
+    void add_or(int p, int q) {
+        this->edges.emplace_back(p ^ 1, q);
+        this->edges.emplace_back(q ^ 1, p);
     }
 
-    void add_diff(int a, int b) {
-        this->add_equal(a, b ^ 1);
+    void add_diff(int p, int q) {
+        this->add_equal(p, q ^ 1);
     }
     
     // Using maxterms
@@ -138,8 +138,4 @@ public:
 private:
     int n;
     vector<pii> edges;
-
-    void add_edge(int a, int b) {
-        edges.emplace_back(a, b);
-    }
 };
