@@ -33,29 +33,15 @@ struct Formula {
 
         this->clauses_cnt += 1;
     }
-
-    void build() {
-        for (const Clause &clause : this->clauses) {
-            for (const int literal : clause) {
-                this->literals_to_clauses_idx[literal].insert(this->clauses.size() - 1);
-            }
-        }
-    }
 };
 
 bool unit_propagation(Formula &formula) {
     unordered_set<int> unit_queue;
 
-    int i {};
+    // É sempre a única cláusula unitária da fórmula
+    unit_queue.insert(formula.clauses.back()[0]);
 
-    for (Clause &clause : formula.clauses) {
-        if (clause.size() == 1) {
-            unit_queue.insert(clause[0]);
-            clause.clear();
-        }
-
-        ++i;
-    }
+    formula.clauses.back().clear();
 
     while (!unit_queue.empty()) {
         int literal {*unit_queue.begin()};
